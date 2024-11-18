@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" 
+        xmlns:bldg="http://www.opengis.net/citygml/building/2.0" 
+        xmlns:core="http://www.opengis.net/citygml/2.0" 
+        xmlns:gml="http://www.opengis.net/gml" 
+        xmlns:lanpar="http://www.sig3d.org/citygml/2.0/landparcel/1.0" 
+        elementFormDefault="qualified" 
+        targetNamespace="http://www.sig3d.org/citygml/2.0/landparcel/1.0" 
+        version="1.0">
+  
+  <annotation>
+    <documentation>ADE untuk mendeskripsikan Persil Tanah dan Hak Atas Tanah</documentation>
+  </annotation>
+
+  <import namespace="http://www.opengis.net/citygml/2.0" schemaLocation="http://schemas.opengis.net/citygml/2.0/cityGMLBase.xsd"/>
+  <import namespace="http://www.opengis.net/citygml/building/2.0" schemaLocation="http://schemas.opengis.net/citygml/building/2.0/building.xsd"/>
+  <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+  
+  <element name="PersilTanah" substitutionGroup="core:_CityObject" type="lanpar:PersilTanahType">
+    <annotation>
+      <appinfo>
+        <taggedValue tag="topLevel">true</taggedValue>
+      </appinfo>
+    </annotation>
+  </element>
+  
+  <complexType name="PersilTanahType">
+    <complexContent>
+      <extension base="core:AbstractCityObjectType">
+        <sequence>
+          <element name="NIB" type="string"/>
+          <element minOccurs="0" name="lod0Surface" type="gml:SurfacePropertyType"/>
+          <element minOccurs="0" name="lod1Surface" type="gml:SurfacePropertyType"/>
+          <element maxOccurs="unbounded" name="ruangHak" type="lanpar:RuangHakPropertyType">
+            <annotation>
+              <appinfo>
+                <taggedValue tag="relationType">aggregation</taggedValue>
+                <taggedValue tag="minOccurs">1</taggedValue>
+                <taggedValue tag="maxOccurs">unbounded</taggedValue>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <complexType name="PersilTanahPropertyType">
+    <sequence minOccurs="0">
+      <element ref="lanpar:PersilTanah">
+        <annotation>
+          <appinfo>
+            <taggedValue tag="ignore">true</taggedValue>
+          </appinfo>
+        </annotation>
+      </element>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+
+  <element name="RuangHak" substitutionGroup="core:_CityObject" type="lanpar:RuangHakType">
+    <annotation>
+      <documentation>Deskripsi Hak Atas Tanah berdasarkan peraturan-peraturan terkait.</documentation>
+      <appinfo>
+        <taggedValue tag="topLevel">true</taggedValue>
+      </appinfo>
+    </annotation>
+  </element>
+
+  <complexType name="RuangHakType">
+    <complexContent>
+      <extension base="core:AbstractCityObjectType">
+        <sequence>
+          <element name="NIK" type="string"/>
+          <element name="HakAtasTanah" type="lanpar:JenisHakType"/>
+          <element name="TanggalMulaiBerlaku" type="date"/>
+          <element name="TanggalBerakhirBerlaku" type="date"/>
+          <element minOccurs="0" name="lod2MultiSolid" type="gml:MultiSolidPropertyType"/>
+          <element minOccurs="0" name="lod3MultiSolid" type="gml:MultiSolidPropertyType"/>
+          <element minOccurs="0" name="lod4MultiSolid" type="gml:MultiSolidPropertyType"/>
+          <element minOccurs="0" name="lod1MultiSolid" type="gml:MultiSolidPropertyType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="ruangHak" type="bldg:RoomType">
+            <annotation>
+              <appinfo>
+                <taggedValue tag="relationType">association</taggedValue>
+                <taggedValue tag="minOccurs">0</taggedValue>
+                <taggedValue tag="maxOccurs">unbounded</taggedValue>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+
+  <complexType name="RuangHakPropertyType">
+    <sequence minOccurs="0">
+      <element ref="lanpar:RuangHak">
+		<annotation>
+          <appinfo>
+            <taggedValue tag="ignore">true</taggedValue>
+		  </appinfo>
+        </annotation>
+	   </element>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+
+  <simpleType name="JenisHakType">
+    <restriction base="string">
+      <enumeration value="HakMilik"/>
+      <enumeration value="HakPengelolaan"/>
+      <enumeration value="HakGunaBangunan"/>
+      <enumeration value="HakGunaUsaha"/>
+      <enumeration value="HakPakaiAtasTanah"/>
+      <enumeration value="SHMSarusun"/>
+      <enumeration value="SKBGSarusun"/>
+    </restriction>
+  </simpleType>
+  
+</schema>
