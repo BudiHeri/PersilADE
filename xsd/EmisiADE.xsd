@@ -1,0 +1,501 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:lanpar="http://www.sig3d.org/citygml/2.0/landparcel/1.0" xmlns:bldg="http://www.opengis.net/citygml/building/2.0" xmlns:core="http://www.opengis.net/citygml/2.0" xmlns:emisi="http://www.sig3d.org/citygml/2.0/emisi/1.0" xmlns:gml="http://www.opengis.net/gml" xmlns:luse="http://www.opengis.net/citygml/landuse/2.0" xmlns:tran="http://www.opengis.net/citygml/transportation/2.0" xmlns:veg="http://www.opengis.net/citygml/vegetation/2.0" xmlns:wtr="http://www.opengis.net/citygml/waterbody/2.0" elementFormDefault="qualified" targetNamespace="http://www.sig3d.org/citygml/2.0/emisi/1.0" version="1.0">
+  <import namespace="http://www.opengis.net/citygml/2.0" schemaLocation="http://schemas.opengis.net/citygml/2.0/cityGMLBase.xsd"/>
+  <import namespace="http://www.opengis.net/citygml/building/2.0" schemaLocation="http://schemas.opengis.net/citygml/building/2.0/building.xsd"/>
+  <import namespace="http://www.opengis.net/citygml/landuse/2.0" schemaLocation="http://schemas.opengis.net/citygml/landuse/2.0/landUse.xsd"/>
+  <import namespace="http://www.opengis.net/citygml/transportation/2.0" schemaLocation="http://schemas.opengis.net/citygml/transportation/2.0/transportation.xsd"/>
+  <import namespace="http://www.opengis.net/citygml/vegetation/2.0" schemaLocation="http://schemas.opengis.net/citygml/vegetation/2.0/vegetation.xsd"/>
+  <import namespace="http://www.opengis.net/citygml/waterbody/2.0" schemaLocation="http://schemas.opengis.net/citygml/waterbody/2.0/waterBody.xsd"/>
+  <import namespace="http://www.opengis.net/gml" schemaLocation="http://schemas.opengis.net/gml/3.1.1/base/gml.xsd"/>
+  <import namespace="http://www.sig3d.org/citygml/2.0/landparcel/1.0" schemaLocation="https://raw.githubusercontent.com/BudiHeri/PersilADE/refs/heads/main/XSD/LandParcelADE.xsd"/>
+  <!--XML Schema document created by ShapeChange - http://shapechange.net/-->
+  <element name="AuxiliaryTrafficArea" substitutionGroup="tran:_TransportationObject" type="emisi:AuxiliaryTrafficAreaType">
+    <annotation>
+      <documentation>Type describing the class for auxiliary traffic Areas. These are the surfaces where no traffic actually
+				takes place, but which belong to a transportation object. Examples are kerbstones, road markings and grass stripes. As
+				subclass of _CityObject, an AuxiliaryTrafficArea inherits all attributes and relations, in particular an id, names,
+				external references, and generalization relations.</documentation>
+    </annotation>
+  </element>
+  <complexType name="AuxiliaryTrafficAreaType">
+    <complexContent>
+      <extension base="tran:AbstractTransportationObjectType">
+        <sequence>
+          <element name="class" type="emisi:KelasJalanType"/>
+          <element minOccurs="0" name="function" type="emisi:FungsiTambahanType"/>
+          <element minOccurs="0" name="surfaceMaterial" type="emisi:MaterialJalanType"/>
+          <element name="FaktorEmisi" type="double"/>
+          <element name="Luas" type="double"/>
+          <element name="TotalEmisi" type="double"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="AuxiliaryTrafficAreaPropertyType">
+    <sequence minOccurs="0">
+      <element ref="emisi:AuxiliaryTrafficArea"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <simpleType name="BBRumahTanggaType">
+    <union memberTypes="emisi:BBRumahTanggaEnumerationType emisi:BBRumahTanggaOtherType"/>
+  </simpleType>
+  <simpleType name="BBRumahTanggaEnumerationType">
+    <restriction base="string">
+      <enumeration value="Gas"/>
+      <enumeration value="MinyakTanah"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="BBRumahTanggaOtherType">
+    <restriction base="string">
+      <pattern value="other: \w{2,}"/>
+    </restriction>
+  </simpleType>
+  <element name="EmisiAir" substitutionGroup="wtr:WaterSurface" type="emisi:EmisiAirType"/>
+  <complexType name="EmisiAirType">
+    <complexContent>
+      <extension base="wtr:WaterSurfaceType">
+        <sequence>
+          <element name="FaktorEmisi" type="double"/>
+          <element name="Luas" type="double"/>
+          <element name="TotalEmisi" type="double"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="EmisiAirPropertyType">
+    <sequence minOccurs="0">
+      <element ref="emisi:EmisiAir"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="EmisiBBKendaraan" substitutionGroup="bldg:Building" type="emisi:EmisiBBKendaraanType"/>
+  <complexType name="EmisiBBKendaraanType">
+    <complexContent>
+      <extension base="bldg:BuildingType">
+        <sequence>
+          <element name="JenisKendaraan" type="emisi:JenisKendaraanType"/>
+          <element name="FaktorEmisi" type="double"/>
+          <element name="TotalKonsumsi" type="double"/>
+          <element name="TotalEmisi" type="double"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="EmisiBBKendaraanPropertyType">
+    <sequence minOccurs="0">
+      <element ref="emisi:EmisiBBKendaraan"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="EmisiBBRumahTangga" substitutionGroup="bldg:Building" type="emisi:EmisiBBRumahTanggaType">
+    <annotation>
+      <documentation>utamanya untuk memasak. bisa juga untuk penerangan, dll di luar kendaraan</documentation>
+    </annotation>
+  </element>
+  <complexType name="EmisiBBRumahTanggaType">
+    <complexContent>
+      <extension base="bldg:BuildingType">
+        <sequence>
+          <element name="JenisBahanBakar" type="emisi:BBRumahTanggaType"/>
+          <element name="FaktorEmisi" type="double"/>
+          <element name="TotalKonsumsi" type="double"/>
+          <element name="TotalEmisi" type="double"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="EmisiBBRumahTanggaPropertyType">
+    <sequence minOccurs="0">
+      <element ref="emisi:EmisiBBRumahTangga"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="EmisiListrik" substitutionGroup="bldg:Building" type="emisi:EmisiListrikType">
+    <annotation>
+      <documentation>termasuk parkir dan jalan internal di dalam persil</documentation>
+    </annotation>
+  </element>
+  <complexType name="EmisiListrikType">
+    <complexContent>
+      <extension base="bldg:BuildingType">
+        <sequence>
+          <element name="FaktorEmisi" type="double"/>
+          <element name="KonsumsiListrik" type="double"/>
+          <element name="TotalEmisi" type="double"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="EmisiListrikPropertyType">
+    <sequence minOccurs="0">
+      <element ref="emisi:EmisiListrik"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <simpleType name="FungsiJalanType">
+    <union memberTypes="emisi:FungsiJalanEnumerationType emisi:FungsiJalanOtherType"/>
+  </simpleType>
+  <simpleType name="FungsiJalanEnumerationType">
+    <restriction base="string">
+      <enumeration value="Jalan"/>
+      <enumeration value="Parkir"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="FungsiJalanOtherType">
+    <restriction base="string">
+      <pattern value="other: \w{2,}"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="FungsiTambahanType">
+    <union memberTypes="emisi:FungsiTambahanEnumerationType emisi:FungsiTambahanOtherType"/>
+  </simpleType>
+  <simpleType name="FungsiTambahanEnumerationType">
+    <restriction base="string">
+      <enumeration value="Median"/>
+      <enumeration value="JalurHijau"/>
+      <enumeration value="Sempadan"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="FungsiTambahanOtherType">
+    <restriction base="string">
+      <pattern value="other: \w{2,}"/>
+    </restriction>
+  </simpleType>
+  <element name="JejakKarbon" type="emisi:JejakKarbonType" substitutionGroup="lanpar:RuangHak"/>
+  <complexType name="JejakKarbonType">
+    <complexContent>
+      <extension base="lanpar:RuangHakType">
+        <sequence>
+          <element name="TotalStokKarbon" type="double"/>
+          <element name="TotalEmisi" type="double"/>
+          <element name="NetCarbonSink" type="double"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="TotalEmisi" type="emisi:_OpeningPropertyType">
+          <annotation>
+            <appinfo>
+              <taggedValue tag="relationType">aggregation</taggedValue>
+            </appinfo>
+          </annotation>
+        </element>
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmisi" type="emisi:_BoundarySurfacePropertyType">
+          <annotation>
+            <appinfo>
+              <taggedValue tag="relationType">aggregation</taggedValue>
+            </appinfo>
+          </annotation>
+        </element>
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalStokKarbon" type="emisi:SolitaryVegetationObjectPropertyType">
+          <annotation>
+            <appinfo>
+              <taggedValue tag="relationType">aggregation</taggedValue>
+            </appinfo>
+          </annotation>
+        </element>
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmisi" type="emisi:EmisiListrikPropertyType">
+          <annotation>
+            <appinfo>
+              <taggedValue tag="relationType">aggregation</taggedValue>
+            </appinfo>
+          </annotation>
+        </element>
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmisi" type="emisi:EmisiBBKendaraanPropertyType">
+          <annotation>
+            <appinfo>
+              <taggedValue tag="relationType">aggregation</taggedValue>
+            </appinfo>
+          </annotation>
+        </element>
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmisi" type="emisi:EmisiBBRumahTanggaPropertyType">
+          <annotation>
+            <appinfo>
+              <taggedValue tag="relationType">aggregation</taggedValue>
+            </appinfo>
+          </annotation>
+        </element>
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmisi" type="emisi:EmisiAirPropertyType">
+          <annotation>
+            <appinfo>
+              <taggedValue tag="relationType">aggregation</taggedValue>
+            </appinfo>
+          </annotation>
+        </element>
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmisi" type="emisi:AuxiliaryTrafficAreaPropertyType">
+          <annotation>
+            <appinfo>
+              <taggedValue tag="relationType">aggregation</taggedValue>
+            </appinfo>
+          </annotation>
+        </element>
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalEmisi" type="emisi:TrafficAreaPropertyType">
+          <annotation>
+            <appinfo>
+              <taggedValue tag="relationType">aggregation</taggedValue>
+            </appinfo>
+          </annotation>
+        </element>
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalStokKarbon" type="emisi:TanamanRendahPropertyType">
+          <annotation>
+            <appinfo>
+              <taggedValue tag="relationType">aggregation</taggedValue>
+            </appinfo>
+          </annotation>
+        </element>
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalStokKarbon" type="emisi:PohonJamakPropertyType">
+          <annotation>
+            <appinfo>
+              <taggedValue tag="relationType">aggregation</taggedValue>
+            </appinfo>
+          </annotation>
+        </element>
+        <element maxOccurs="unbounded" minOccurs="0" name="TotalStokKarbon" type="emisi:LandUsePropertyType">
+          <annotation>
+            <appinfo>
+              <taggedValue tag="relationType">aggregation</taggedValue>
+            </appinfo>
+          </annotation>
+        </element>
+      </sequence>
+    </extension>
+  </complexContent>
+</complexType>
+  <complexType name="JejakKarbonPropertyType">
+    <sequence minOccurs="0">
+      <element ref="emisi:JejakKarbon"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <simpleType name="JenisKendaraanType">
+    <union memberTypes="emisi:JenisKendaraanEnumerationType emisi:JenisKendaraanOtherType"/>
+  </simpleType>
+  <simpleType name="JenisKendaraanEnumerationType">
+    <restriction base="string">
+      <enumeration value="SepedaMotor"/>
+      <enumeration value="Mobil"/>
+      <enumeration value="Bus"/>
+      <enumeration value="Truk"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="JenisKendaraanOtherType">
+    <restriction base="string">
+      <pattern value="other: \w{2,}"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="KelasJalanType">
+    <union memberTypes="emisi:KelasJalanEnumerationType emisi:KelasJalanOtherType"/>
+  </simpleType>
+  <simpleType name="KelasJalanEnumerationType">
+    <restriction base="string">
+      <enumeration value="arteri"/>
+      <enumeration value="kolektor"/>
+      <enumeration value="lokal"/>
+      <enumeration value="lingkungan"/>
+      <enumeration value="tol"/>
+      <enumeration value="gang/setapak"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="KelasJalanOtherType">
+    <restriction base="string">
+      <pattern value="other: \w{2,}"/>
+    </restriction>
+  </simpleType>
+  <element name="LandUse" substitutionGroup="luse:LandUse" type="emisi:LandUseType"/>
+  <complexType name="LandUseType">
+    <complexContent>
+      <extension base="luse:LandUseType">
+        <sequence>
+          <element name="FaktorStokKarbon" type="double"/>
+          <element name="Luas" type="double"/>
+          <element name="TotalEmisi" type="double"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="LandUsePropertyType">
+    <sequence minOccurs="0">
+      <element ref="emisi:LandUse"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <simpleType name="MaterialBangunanType">
+    <union memberTypes="emisi:MaterialBangunanEnumerationType emisi:MaterialBangunanOtherType"/>
+  </simpleType>
+  <simpleType name="MaterialBangunanEnumerationType">
+    <restriction base="string">
+      <enumeration value="Besi"/>
+      <enumeration value="Beton"/>
+      <enumeration value="Kayu"/>
+      <enumeration value="Batu"/>
+      <enumeration value="Bata"/>
+      <enumeration value="Keramik"/>
+      <enumeration value="Alumunium"/>
+      <enumeration value="Kaca"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="MaterialBangunanOtherType">
+    <restriction base="string">
+      <pattern value="other: \w{2,}"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="MaterialJalanType">
+    <union memberTypes="emisi:MaterialJalanEnumerationType emisi:MaterialJalanOtherType"/>
+  </simpleType>
+  <simpleType name="MaterialJalanEnumerationType">
+    <restriction base="string">
+      <enumeration value="Aspal"/>
+      <enumeration value="Beton"/>
+      <enumeration value="Tanah/Pasir"/>
+      <enumeration value="Batako"/>
+      <enumeration value="Rumput"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="MaterialJalanOtherType">
+    <restriction base="string">
+      <pattern value="other: \w{2,}"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="PenggunaanType">
+    <union memberTypes="emisi:PenggunaanEnumerationType emisi:PenggunaanOtherType"/>
+  </simpleType>
+  <simpleType name="PenggunaanEnumerationType">
+    <restriction base="string">
+      <enumeration value="RodaEmpat"/>
+      <enumeration value="RodaDua"/>
+      <enumeration value="Busway"/>
+      <enumeration value="KeretaApi"/>
+      <enumeration value="PejalanKaki"/>
+      <enumeration value="Sepeda"/>
+    </restriction>
+  </simpleType>
+  <simpleType name="PenggunaanOtherType">
+    <restriction base="string">
+      <pattern value="other: \w{2,}"/>
+    </restriction>
+  </simpleType>
+  <element name="PohonJamak" substitutionGroup="veg:PlantCover" type="emisi:PohonJamakType"/>
+  <complexType name="PohonJamakType">
+    <complexContent>
+      <extension base="veg:PlantCoverType">
+        <sequence>
+          <element name="FaktorStokKarbon" type="double"/>
+          <element name="LuasTajuk"/>
+          <element name="TotalStokKarbon" type="double"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="PohonJamakPropertyType">
+    <sequence minOccurs="0">
+      <element ref="emisi:PohonJamak"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="SolitaryVegetationObject" substitutionGroup="veg:SolitaryVegetationObject" type="emisi:SolitaryVegetationObjectType"/>
+  <complexType name="SolitaryVegetationObjectType">
+    <complexContent>
+      <extension base="veg:SolitaryVegetationObjectType">
+        <sequence>
+          <element name="crownArea" type="double"/>
+          <element name="FaktorStokKarbon" type="double"/>
+          <element name="TotalStokKarbon" type="double"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="SolitaryVegetationObjectPropertyType">
+    <sequence minOccurs="0">
+      <element ref="emisi:SolitaryVegetationObject"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="TanamanRendah" substitutionGroup="veg:PlantCover" type="emisi:TanamanRendahType"/>
+  <complexType name="TanamanRendahType">
+    <complexContent>
+      <extension base="veg:PlantCoverType">
+        <sequence>
+          <element name="FaktorStokKarbon" type="double"/>
+          <element name="LuasTajuk" type="double"/>
+          <element name="TotalStokKarbon" type="double"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="TanamanRendahPropertyType">
+    <sequence minOccurs="0">
+      <element ref="emisi:TanamanRendah"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element name="TrafficArea" substitutionGroup="tran:_TransportationObject" type="emisi:TrafficAreaType">
+    <annotation>
+      <documentation>Type describing the class for traffic Areas. Traffic areas are the surfaces where traffic actually takes
+				place. As subclass of _CityObject, a TrafficArea inherits all attributes and relations, in particular an id, names,
+				external references, and generalization relations.</documentation>
+    </annotation>
+  </element>
+  <complexType name="TrafficAreaType">
+    <complexContent>
+      <extension base="tran:AbstractTransportationObjectType">
+        <sequence>
+          <element name="class" type="emisi:KelasJalanType"/>
+          <element maxOccurs="unbounded" minOccurs="0" name="usage" type="emisi:PenggunaanType"/>
+          <element minOccurs="0" name="surfaceMaterial" type="emisi:MaterialJalanType"/>
+          <element name="FaktorEmisi" type="double"/>
+          <element name="Luas" type="double"/>
+          <element name="TotalEmisi" type="double"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="TrafficAreaPropertyType">
+    <sequence minOccurs="0">
+      <element ref="emisi:TrafficArea"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element abstract="true" name="_BoundarySurface" substitutionGroup="core:_CityObject" type="emisi:_BoundarySurfaceType">
+    <annotation>
+      <documentation>SIG3D: Abstract super class of boundary surfaces of Building, BuildingPart, Room and BuildingInstallation</documentation>
+    </annotation>
+  </element>
+  <complexType abstract="true" name="_BoundarySurfaceType">
+    <complexContent>
+      <extension base="core:AbstractCityObjectType">
+        <sequence>
+          <element name="Material" type="emisi:MaterialBangunanType" substitutionGroup="bldg:_GenericApplicationPropertyOfBoundarySurface"/>
+          <element name="FaktorEmisi" type="double" substitutionGroup="bldg:_GenericApplicationPropertyOfBoundarySurface"/>
+          <element name="Luas/Volume" type="double" substitutionGroup="bldg:_GenericApplicationPropertyOfBoundarySurface"/>
+          <element name="TotalEmisi" type="double" substitutionGroup="bldg:_GenericApplicationPropertyOfBoundarySurface"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="_BoundarySurfacePropertyType">
+    <sequence minOccurs="0">
+      <element ref="emisi:_BoundarySurface"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+  <element abstract="true" name="_Opening" substitutionGroup="core:_CityObject" type="emisi:_OpeningType">
+    <annotation>
+      <documentation>SIG3D: Abstract super class of Window and Door</documentation>
+    </annotation>
+  </element>
+  <complexType abstract="true" name="_OpeningType">
+    <complexContent>
+      <extension base="core:AbstractCityObjectType">
+        <sequence>
+          <element name="Material" type="emisi:MaterialBangunanType" substitutionGroup="bldg:_GenericApplicationPropertyOfOpening"/>
+          <element name="FaktorEmisi" type="double" substitutionGroup="bldg:_GenericApplicationPropertyOfBoundarySurface"/>
+          <element name="Luas/Volume" type="double" substitutionGroup="bldg:_GenericApplicationPropertyOfBoundarySurface"/>
+          <element name="TotalEmisi" type="double" substitutionGroup="bldg:_GenericApplicationPropertyOfBoundarySurface"/>
+        </sequence>
+      </extension>
+    </complexContent>
+  </complexType>
+  <complexType name="_OpeningPropertyType">
+    <sequence minOccurs="0">
+      <element ref="emisi:_Opening"/>
+    </sequence>
+    <attributeGroup ref="gml:AssociationAttributeGroup"/>
+  </complexType>
+ </schema>
